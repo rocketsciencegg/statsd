@@ -2,11 +2,18 @@ name: Go CI
 
 on:
   push:
+    branches:
+      - master
+      - main
   pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -22,6 +29,16 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
           check-latest: true
+      - name: Check formatting
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            printf 'Run gofmt on:\n%s\n' "$unformatted"
+            exit 1
+          fi
+      - name: Check module tidiness
+        if: matrix.go-version == 'stable'
+        run: go mod tidy -diff
       - name: Test
         run: go test -race -timeout=10s ./...
       - name: Vet
