@@ -1,0 +1,10 @@
+version: "2"
+linters:
+  exclusions:
+    rules:
+      # This regression test intentionally passes an odd number of tags.
+      - path: '(^|/)statsd_test\.go$'
+        linters:
+          - staticcheck
+        text: '^SA5012:'
+        source: 'Tags\("tag1"\)'
