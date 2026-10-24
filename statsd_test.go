@@ -202,9 +202,7 @@ func TestOddTagsArgs(t *testing.T) {
 		}
 	}()
 
-	oddTags := []string{"tag1"}
-	//nolint:staticcheck // The odd tag count is the behavior under test.
-	_, _ = New(TagsFormat(InfluxDB), Tags(oddTags...))
+	_, _ = New(TagsFormat(InfluxDB), Tags("tag1"))
 	t.Fatal("A panic should occur")
 }
 
