@@ -12,37 +12,22 @@ jobs:
   test:
     name: Go ${{ matrix.go-version }}
     runs-on: ubuntu-latest
+    env:
+      GOMAXPROCS: 2
     strategy:
       fail-fast: false
       matrix:
-        go-version: ["1.13", "stable"]
+        go-version: ["stable", "oldstable"]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          path: go/src/github.com/multiplay/statsd
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: ${{ matrix.go-version }}
           check-latest: true
           cache: false
       - name: Test
-        working-directory: go/src/github.com/multiplay/statsd
-        env:
-          GO111MODULE: off
-          GOPATH: ${{ github.workspace }}/go
-          GOMAXPROCS: 2
         run: go test -p 2 -race -timeout=10s ./...
       - name: Vet
-        working-directory: go/src/github.com/multiplay/statsd
-        env:
-          GO111MODULE: off
-          GOPATH: ${{ github.workspace }}/go
-          GOMAXPROCS: 2
         run: go vet -p 2 ./...
       - name: Build
-        working-directory: go/src/github.com/multiplay/statsd
-        env:
-          GO111MODULE: off
-          GOPATH: ${{ github.workspace }}/go
-          GOMAXPROCS: 2
         run: go build -p 2 ./...
