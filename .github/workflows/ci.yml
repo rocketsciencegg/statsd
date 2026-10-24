@@ -12,8 +12,6 @@ jobs:
   test:
     name: Go ${{ matrix.go-version }}
     runs-on: ubuntu-latest
-    env:
-      GOMAXPROCS: 2
     strategy:
       fail-fast: false
       matrix:
@@ -24,10 +22,9 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
           check-latest: true
-          cache: false
       - name: Test
-        run: go test -p 2 -race -timeout=10s ./...
+        run: go test -race -timeout=10s ./...
       - name: Vet
-        run: go vet -p 2 ./...
+        run: go vet ./...
       - name: Build
-        run: go build -p 2 ./...
+        run: go build ./...

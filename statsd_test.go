@@ -520,14 +520,14 @@ func newServer(t testing.TB, network, addr string, f func([]byte)) *server {
 					s.closed <- true
 					return
 				}
-				var p bytes.Buffer
-				if _, err := io.Copy(&p, conn); err != nil {
+				p, err := io.ReadAll(conn)
+				if err != nil {
 					t.Fatal(err)
 				}
 				if err := conn.Close(); err != nil {
 					t.Fatal(err)
 				}
-				f(p.Bytes())
+				f(p)
 			}
 		}()
 	default:
