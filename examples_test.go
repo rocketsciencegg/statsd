@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/multiplay/statsd"
+	"github.com/rocketsciencegg/statsd/v2"
 )
 
 var (

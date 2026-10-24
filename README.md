@@ -17,7 +17,13 @@ This is a fork of a [dead statsd client project](https://github.com/alexcesaro/s
 
 ## Download
 
-    go get github.com/multiplay/statsd
+    go get github.com/rocketsciencegg/statsd/v2
+
+Import the v2 module in your Go code:
+
+```go
+import "github.com/rocketsciencegg/statsd/v2"
+```
 
 ## License
 

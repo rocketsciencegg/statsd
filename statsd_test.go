@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"io"
-	"io/ioutil"
 	"net"
 	"sync"
 	"testing"
@@ -203,7 +202,7 @@ func TestOddTagsArgs(t *testing.T) {
 		}
 	}()
 
-	_, _ = New(TagsFormat(InfluxDB), Tags("tag1"))
+	_, _ = New(TagsFormat(InfluxDB), Tags("tag1")) //nolint:staticcheck // Intentionally pass an odd tag count to test the panic.
 	t.Fatal("A panic should occur")
 }
 
@@ -519,7 +518,7 @@ func newServer(t testing.TB, network, addr string, f func([]byte)) *server {
 					s.closed <- true
 					return
 				}
-				p, err := ioutil.ReadAll(conn)
+				p, err := io.ReadAll(conn)
 				if err != nil {
 					t.Fatal(err)
 				}
